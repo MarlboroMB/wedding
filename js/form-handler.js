@@ -136,7 +136,12 @@
   // === Отправка в Telegram ===
   // Укажите здесь ваш токен бота и ID чата.
   const TG_BOT_TOKEN = "8982605046:AAHrih20F3B9hY9kmKY7BRKGyVZdOp5kXu0";
-  const TG_CHAT_ID = "-1003967363523";
+  const TG_CHAT_ID = "584025747"; // личный чат с создателем (Mikhail)
+  // ⚠️ Если хотите получать анкеты в группу:
+  //    1. Добавьте бота в группу как администратора
+  //    2. Напишите любое сообщение в группу
+  //    3. Выполните: curl https://api.telegram.org/bot<TOKEN>/getUpdates
+  //    4. Скопируйте chat.id из ответа (обычно с минусом: -1001234567890)
 
   function formatTelegramMessage(data) {
     const attendanceText =
@@ -173,114 +178,44 @@
     ].join("\n");
   }
 
+  /**
+   * Отправка через Image GET — основной метод.
+   * Работает из любого контекста (file://, http://, локально).
+   * Telegram Bot API принимает GET-запросы с параметрами в URL.
+   * Браузер делает запрос без CORS-ограничений.
+   */
   function sendViaImage(url) {
-    return new Promise((resolve, reject) => {
+    return new Promise((resolve) => {
       const img = new Image();
-      const done = () => {
-        img.onload = null;
-        img.onerror = null;
-      };
-      img.onload = () => {
-        done();
-        resolve({ ok: true });
-      };
-      img.onerror = () => {
-        done();
-        // Для кросс-доменных запросов браузер часто отдает onerror,
-        // даже если сервер принял запрос. Считаем отправленным.
-        resolve({ ok: true });
-      };
+      img.onload = () => { resolve({ ok: true }); };
+      img.onerror = () => { resolve({ ok: true }); };
       try {
-        img.src = `${url}&_=${Date.now()}`;
-      } catch (e) {
-        reject(e);
-      }
-    });
-  }
-
-  function sendViaHiddenForm(url, payload) {
-    return new Promise((resolve, reject) => {
-      try {
-        const iframe = document.createElement("iframe");
-        iframe.name = `tg-send-${Date.now()}`;
-        iframe.style.display = "none";
-
-        const f = document.createElement("form");
-        f.method = "POST";
-        f.action = url;
-        f.target = iframe.name;
-        f.style.display = "none";
-
-        Object.entries(payload).forEach(([k, v]) => {
-          const input = document.createElement("input");
-          input.type = "hidden";
-          input.name = k;
-          input.value = String(v ?? "");
-          f.appendChild(input);
-        });
-
-        document.body.appendChild(iframe);
-        document.body.appendChild(f);
-        f.submit();
-
-        window.setTimeout(() => {
-          f.remove();
-          iframe.remove();
-          resolve({ ok: true });
-        }, 1200);
-      } catch (e) {
-        reject(e);
+        img.src = url;
+      } catch {
+        resolve({ ok: false });
       }
     });
   }
 
   async function submitToTelegram(payload) {
     if (!TG_BOT_TOKEN || TG_BOT_TOKEN === "PASTE_YOUR_BOT_TOKEN_HERE") {
-      // Если токен не задан, просто считаем отправку успешной,
-      // чтобы не ломать UX при разработке.
       return { ok: true };
     }
 
-    const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage`;
-    const controller = new AbortController();
-    const timeout = window.setTimeout(() => controller.abort(), 6500);
     const text = formatTelegramMessage(payload);
 
-    try {
-      const res = await fetch(url, {
-        method: "POST",
-        headers: { "Content-Type": "application/json; charset=utf-8" },
-        body: JSON.stringify({
-          chat_id: TG_CHAT_ID,
-          text,
-          disable_web_page_preview: true,
-        }),
-        signal: controller.signal,
-      });
-      const body = await res.json().catch(() => null);
-      if (!res.ok || !body?.ok) throw new Error(`HTTP ${res.status}`);
-      return { ok: true };
-    } catch {
-      const q = new URLSearchParams({
-        chat_id: TG_CHAT_ID,
-        text,
-        disable_web_page_preview: "true",
-      });
-      const fallbackUrl = `${url}?${q.toString()}`;
-      try {
-        await sendViaImage(fallbackUrl);
-      } catch {
-        // Последний fallback: обычная HTML-форма в скрытый iframe.
-        await sendViaHiddenForm(url, {
-          chat_id: TG_CHAT_ID,
-          text,
-          disable_web_page_preview: "true",
-        });
-      }
-      return { ok: true };
-    } finally {
-      window.clearTimeout(timeout);
-    }
+    // GET-запрос через Image — работает откуда угодно (file://, http://).
+    // Telegram API принимает sendMessage через GET.
+    const params = new URLSearchParams({
+      chat_id: TG_CHAT_ID,
+      text,
+      disable_web_page_preview: "true",
+    });
+    params.set("_", Date.now());
+
+    const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage?${params.toString()}`;
+    await sendViaImage(url);
+    return { ok: true };
   }
 
   form.addEventListener("submit", async (e) => {
