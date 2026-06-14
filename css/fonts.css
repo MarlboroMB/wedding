@@ -1,0 +1,9 @@
+@font-face {
+  font-family: "New Rome Trial";
+  src:
+    local("New Rome Trial Light"),
+    url("../fonts/new-rome-trial-light.woff2") format("woff2");
+  font-weight: 300;
+  font-style: normal;
+  font-display: swap;
+}
