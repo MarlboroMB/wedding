@@ -1,6 +1,15 @@
 (() => {
+  "use strict";
+
+  // Глобальный флаг — защита от двойного запуска
+  if (window.__countdownInited) return;
+  window.__countdownInited = true;
+
   const root = document.querySelector("[data-countdown]");
   if (!root) return;
+
+  // 3 августа 2026, 12:00 МСК (UTC+3) => 09:00 UTC
+  const targetUtcMs = Date.UTC(2026, 7, 3, 9, 0, 0);
 
   const fields = {
     days: root.querySelector("[data-cd='days']"),
@@ -9,9 +18,6 @@
     seconds: root.querySelector("[data-cd='seconds']"),
   };
   const status = root.querySelector("[data-cd-status]");
-
-  // 3 августа 2026, 12:00 МСК (UTC+3) => 09:00 UTC
-  const targetUtcMs = Date.UTC(2026, 7, 3, 9, 0, 0);
 
   const pad2 = (n) => String(n).padStart(2, "0");
 
@@ -30,18 +36,13 @@
     if (status) status.textContent = diffMs <= 0 ? "Событие уже началось." : "";
   }
 
-  let timer = null;
-  function tick() {
-    const now = Date.now();
-    const diff = targetUtcMs - now;
+  // Первый рендер
+  render(targetUtcMs - Date.now());
+
+  // Тикер каждую секунду
+  const timer = setInterval(() => {
+    const diff = targetUtcMs - Date.now();
     render(diff);
-    if (diff <= 0 && timer) {
-      clearInterval(timer);
-      timer = null;
-    }
-  }
-
-  tick();
-  timer = window.setInterval(tick, 1000);
+    if (diff <= 0) clearInterval(timer);
+  }, 1000);
 })();
-

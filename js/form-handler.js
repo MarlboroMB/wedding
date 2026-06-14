@@ -49,6 +49,7 @@
       attendance: String(fd.get("attendance") || ""),
       drinks,
       otherDrinkText: String(fd.get("drink_other_text") || "").trim(),
+      allergy: String(fd.get("allergy") || "").trim(),
       ts: new Date().toISOString(),
     };
   }
@@ -133,89 +134,26 @@
     form.__saveTimer = window.setTimeout(saveDraft, 200);
   });
 
-  // === Отправка в Telegram ===
-  // Укажите здесь ваш токен бота и ID чата.
-  const TG_BOT_TOKEN = "8982605046:AAHrih20F3B9hY9kmKY7BRKGyVZdOp5kXu0";
-  const TG_CHAT_ID = "584025747"; // личный чат с создателем (Mikhail)
-  // ⚠️ Если хотите получать анкеты в группу:
-  //    1. Добавьте бота в группу как администратора
-  //    2. Напишите любое сообщение в группу
-  //    3. Выполните: curl https://api.telegram.org/bot<TOKEN>/getUpdates
-  //    4. Скопируйте chat.id из ответа (обычно с минусом: -1001234567890)
+  // === Отправка анкеты на email через PHP ===
+  const PHP_ENDPOINT = "send.php";
+  const REQUEST_TIMEOUT = 8000; // 8 секунд
 
-  function formatTelegramMessage(data) {
-    const attendanceText =
-      data.attendance === "yes" ? "Обязательно буду" : data.attendance === "no" ? "К сожалению, не смогу присутствовать" : "—";
+  async function submitForm(data) {
+    const controller = new AbortController();
+    const timer = setTimeout(() => controller.abort(), REQUEST_TIMEOUT);
 
-    const drinksMap = {
-      red_wine: "Вино красное",
-      white_wine: "Вино белое",
-      champagne: "Шампанское",
-      whiskey: "Виски",
-      cognac: "Коньяк",
-      vodka: "Водка",
-      other: "Другое",
-    };
-
-    const selectedDrinks = Array.isArray(data.drinks) ? data.drinks : [];
-    const drinksList = selectedDrinks.length
-      ? selectedDrinks
-          .map((d) => {
-            if (d !== "other") return drinksMap[d] || d;
-            return data.otherDrinkText ? `другое (${data.otherDrinkText})` : "другое";
-          })
-          .join(", ")
-      : "не выбрано";
-
-    return [
-      "Новая анкета гостя",
-      "",
-      `Имя: ${data.name || "—"}`,
-      `Присутствие: ${attendanceText}`,
-      `Напитки: ${drinksList}`,
-      "",
-      `Отправлено: ${new Date(data.ts).toLocaleString("ru-RU")}`,
-    ].join("\n");
-  }
-
-  /**
-   * Отправка через Image GET — основной метод.
-   * Работает из любого контекста (file://, http://, локально).
-   * Telegram Bot API принимает GET-запросы с параметрами в URL.
-   * Браузер делает запрос без CORS-ограничений.
-   */
-  function sendViaImage(url) {
-    return new Promise((resolve) => {
-      const img = new Image();
-      img.onload = () => { resolve({ ok: true }); };
-      img.onerror = () => { resolve({ ok: true }); };
-      try {
-        img.src = url;
-      } catch {
-        resolve({ ok: false });
-      }
-    });
-  }
-
-  async function submitToTelegram(payload) {
-    if (!TG_BOT_TOKEN || TG_BOT_TOKEN === "PASTE_YOUR_BOT_TOKEN_HERE") {
-      return { ok: true };
+    try {
+      const response = await fetch(PHP_ENDPOINT, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+        signal: controller.signal,
+      });
+      const result = await response.json();
+      return { ok: response.ok, ...result };
+    } finally {
+      clearTimeout(timer);
     }
-
-    const text = formatTelegramMessage(payload);
-
-    // GET-запрос через Image — работает откуда угодно (file://, http://).
-    // Telegram API принимает sendMessage через GET.
-    const params = new URLSearchParams({
-      chat_id: TG_CHAT_ID,
-      text,
-      disable_web_page_preview: "true",
-    });
-    params.set("_", Date.now());
-
-    const url = `https://api.telegram.org/bot${TG_BOT_TOKEN}/sendMessage?${params.toString()}`;
-    await sendViaImage(url);
-    return { ok: true };
   }
 
   form.addEventListener("submit", async (e) => {
@@ -232,8 +170,8 @@
 
     let sent = false;
     try {
-      await submitToTelegram(data);
-      sent = true;
+      const result = await submitForm(data);
+      sent = result.ok === true;
     } catch {
       sent = false;
     }
@@ -253,7 +191,13 @@
       setError("name", "");
       setError("attendance", "");
       setError("drink_other_text", "");
+      setError("allergy", "");
       syncOtherDrinkField();
+
+      // Конфетти 🎊
+      if (typeof window.confetti?.fire === "function") {
+        window.confetti.fire({ count: 80 });
+      }
     }
 
     if (submitBtn) {
@@ -271,4 +215,3 @@
     openModal();
   });
 })();
-
