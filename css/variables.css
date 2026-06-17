@@ -18,8 +18,8 @@
   --container: 1060px;
   --pad: 20px;
 
-  --font-body: "New Rome Trial", Georgia, "Times New Roman", serif;
-  --font-weight: 300;
+  --font-body: "Bell MT", "Bell", Georgia, "Times New Roman", serif;
+  --font-weight: 400;
 
   --ease: cubic-bezier(0.2, 0.9, 0.2, 1);
 }

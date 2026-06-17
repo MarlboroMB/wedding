@@ -1,9 +1,10 @@
 @font-face {
-  font-family: "New Rome Trial";
+  font-family: "Bell MT";
   src:
-    local("New Rome Trial Light"),
-    url("../fonts/new-rome-trial-light.woff2") format("woff2");
-  font-weight: 300;
+    local("Bell MT"),
+    local("Bell"),
+    url("../fonts/bell-mt.ttf") format("truetype");
+  font-weight: 400;
   font-style: normal;
   font-display: swap;
 }

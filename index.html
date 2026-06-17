@@ -13,10 +13,10 @@
     />
 
     <!-- Styles -->
-    <link rel="stylesheet" href="./css/fonts.css?v=5" />
-    <link rel="stylesheet" href="./css/variables.css?v=5" />
-    <link rel="stylesheet" href="./css/animations.css?v=5" />
-    <link rel="stylesheet" href="./css/main.css?v=5" />
+    <link rel="stylesheet" href="./css/fonts.css?v=6" />
+    <link rel="stylesheet" href="./css/variables.css?v=6" />
+    <link rel="stylesheet" href="./css/animations.css?v=6" />
+    <link rel="stylesheet" href="./css/main.css?v=6" />
 
     <noscript>
       <style>
@@ -36,10 +36,6 @@
       <div class="intro__shade" aria-hidden="true"></div>
       <div class="intro__center">
         <div class="envelope" data-envelope role="button" tabindex="0" aria-label="Открыть конверт">
-          <div class="envelope__letter" aria-hidden="true">
-            <p class="letter__date">Ждём вас на нашей свадьбе!</p>
-            <button class="letter__btn" type="button" data-intro-continue>Перейти к приглашению</button>
-          </div>
           <div class="envelope__front"></div>
           <div class="envelope__text">
             <div class="env__top">Приглашение на свадьбу</div>
@@ -95,7 +91,7 @@
       <section class="section reveal" id="countdown" aria-label="Обратный отсчёт">
         <div class="container">
           <header class="section__header">
-            <h2 class="section__title">До заветного "Да!" осталось</h2>
+            <h2 class="section__title">До заветного «ДА!» осталось</h2>
           </header>
 
           <div class="countdown card" data-countdown>
@@ -125,10 +121,6 @@
             <p class="countdown__status muted" data-cd-status aria-live="polite"></p>
           </div>
         </div>
-        <div class="hero__actions">
-          <a class="btn" href="#rsvp">Подтвердить присутствие</a>
-          <a class="btn btn--ghost" href="#place">Узнать место</a>
-        </div>
       
       </section>
 
@@ -149,8 +141,8 @@
             <div class="calendar__grid" id="calendar-grid"></div>
            
             <p class="hero-ref__text hero-ref__text--final">
-              Мы верим, что этот день станет началом нашего счастья.<br />
-              Поэтому не представляем наш праздник без <strong>Вашего участия</strong>.
+              Мы верим, что этот день станет началом нашего счастья.<br/>
+              Поэтому не представляем наш праздник без <strong>Вашего участия!</strong>
             </p>
           </div>
         </div>
@@ -160,7 +152,7 @@
       <section class="section reveal" id="place">
         <div class="container">
           <header class="section__header">
-            <h2 class="section__title">Место проведения</h2>
+            <h2 class="section__title">Место встречи гостей <br/> и проведения торжества</h2>
             <div class="divider" aria-hidden="true"></div>
           </header>
 
@@ -179,6 +171,35 @@
 
             <div class="slider__viewport">
               <div class="slider__track" data-slider-track>
+                <article class="slide place" aria-label="Mansard" style="text-align: center">
+                  <figure class="place__photo">
+                    <img src="./img/pleshka.png" loading="lazy" alt="Логотип Mansard restaurant & hall" />
+                  </figure>
+                  <h3 class="place__title">Площадь Юности</h3>
+                  <p class="place__address">Зеленоград, пл. Юности, 2с1 (парковка напротив "Перекрестка")</p>
+                  <div class="place__time" style="justify-content: center">
+                    <span class="icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" width="20" height="20" focusable="false" aria-hidden="true">
+                        <path
+                          d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8a8.009 8.009 0 0 1-8 8Zm.5-13h-2v6l5.25 3.15 1-1.64-4.25-2.51Z"
+                          fill="currentColor"
+                        />
+                      </svg>
+                    </span>
+                    <span><strong>Время сбора гостей:</strong> 13:00</span>
+                  </div>
+                  <div class="place__actions" style="justify-content: center">
+                    <a
+                      class="btn btn--small"
+                      href="https://yandex.ru/maps/213/moscow/house/ploshchad_yunosti_2s1/Z04YdAZgT0UOQFtsfXxxc3xnbA==/?ll=37.210763%2C56.001937&z=17.8"
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      Как добраться
+                    </a>
+                  </div>
+                </article>
+
                 <article class="slide place" aria-label="Дом у Леса" style="text-align: center">
                   <figure class="place__photo">
                     <img
@@ -199,7 +220,7 @@
                         />
                       </svg>
                     </span>
-                    <span><strong>Время сбора:</strong> 12:00</span>
+                    <span><strong>Время сбора:</strong> 14:00</span>
                   </div>
 
                   <div class="place__actions" style="justify-content: center">
@@ -210,43 +231,6 @@
                       rel="noreferrer"
                     >
                       Как добраться
-                    </a>
-                  </div>
-                </article>
-
-                <article class="slide place" aria-label="Mansard" style="text-align: center">
-                  <figure class="place__photo">
-                    <img src="./img/mansard.png" loading="lazy" alt="Логотип Mansard restaurant & hall" />
-                  </figure>
-                  <h3 class="place__title">Mansard</h3>
-                  <p class="place__address">Москва, ул. Лавочкина, 7А, стр. 1</p>
-                  <div class="place__time" style="justify-content: center">
-                    <span class="icon" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" width="20" height="20" focusable="false" aria-hidden="true">
-                        <path
-                          d="M12 2a10 10 0 1 0 10 10A10.011 10.011 0 0 0 12 2Zm0 18a8 8 0 1 1 8-8a8.009 8.009 0 0 1-8 8Zm.5-13h-2v6l5.25 3.15 1-1.64-4.25-2.51Z"
-                          fill="currentColor"
-                        />
-                      </svg>
-                    </span>
-                    <span><strong>Время сбора:</strong> 16:00</span>
-                  </div>
-                  <div class="place__actions" style="justify-content: center">
-                    <a
-                      class="btn btn--small"
-                      href="https://yandex.ru/maps/?text=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C%20%D1%83%D0%BB%D0%B8%D1%86%D0%B0%20%D0%9B%D0%B0%D0%B2%D0%BE%D1%87%D0%BA%D0%B8%D0%BD%D0%B0%2C%207%D0%90%2C%20%D1%81%D1%82%D1%80.%201"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Как добраться
-                    </a>
-                    <a
-                      class="link"
-                      href="https://www.google.com/maps/search/?api=1&query=%D0%9C%D0%BE%D1%81%D0%BA%D0%B2%D0%B0%2C+%D1%83%D0%BB%D0%B8%D1%86%D0%B0+%D0%9B%D0%B0%D0%B2%D0%BE%D1%87%D0%BA%D0%B8%D0%BD%D0%B0%2C+7%D0%90%2C+%D1%81%D1%82%D1%80.+1"
-                      target="_blank"
-                      rel="noreferrer"
-                    >
-                      Google Maps
                     </a>
                   </div>
                 </article>
@@ -273,14 +257,14 @@
             <li class="timeline__item reveal">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div class="timeline__content card">
-                <p class="timeline__time">12:00</p>
-                <p class="timeline__text">Сбор гостей</p>
+                <p class="timeline__time">14:00</p>
+                <p class="timeline__text">Сбор гостей на площадке</p>
               </div>
             </li>
             <li class="timeline__item reveal">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div class="timeline__content card">
-                <p class="timeline__time">12:40</p>
+                <p class="timeline__time">15:00</p>
                 <p class="timeline__text">Церемония регистрации</p>
               </div>
             </li>
@@ -294,7 +278,7 @@
             <li class="timeline__item reveal">
               <div class="timeline__dot" aria-hidden="true"></div>
               <div class="timeline__content card">
-                <p class="timeline__time">23:00</p>
+                <p class="timeline__time">21:00</p>
                 <p class="timeline__text">Завершение вечера</p>
               </div>
             </li>
@@ -342,7 +326,7 @@
 
           <div class="slider card" data-slider aria-roledescription="carousel">
             <div class="slider__head">
-              <p class="slider__counter" data-slider-counter aria-live="polite">1/3</p>
+              <p class="slider__counter" data-slider-counter aria-live="polite">1/2</p>
               <div class="slider__controls">
                 <button class="icon-btn" type="button" data-slider-prev aria-label="Предыдущий блок">
                   <span aria-hidden="true">←</span>
@@ -358,20 +342,14 @@
                 <article class="slide" aria-label="Подарки">
                   <h3 class="slide__title">Подарки</h3>
                   <p class="slide__text muted">
-                    Самый ценный и значимый подарок, который вы можете сделать — это ваше присутствие и искренние слова.
+                    Самый ценный и значимый подарок, который вы можете сделать, — это ваше присутствие и искренние слова.
                     Если хотите подарить ценный и нужный подарок, мы будем благодарны за вклад в семейный бюджет, упакованный в конвертик.
-                  </p>
-                </article>
-                <article class="slide" aria-label="Цветы и алкоголь">
-                  <h3 class="slide__title">Цветы и алкоголь</h3>
-                  <p class="slide__text muted">
-                    Пожалуйста, не обременяйте себя покупкой красивого букета, вы можете вовсе прийти без цветов или сделать выбор в пользу хорошего алкоголя.
                   </p>
                 </article>
                 <article class="slide" aria-label="Сюрпризы">
                   <h3 class="slide__title">Сюрпризы</h3>
                   <p class="slide__text muted">
-                    Если вы хотите устроить нам сюрприз, подарить музыкальный подарок, станцевать танец или что-то ещё, свяжитесь с нашим ведущим Игорем и согласуйте с ним все детали.
+                    Если вы хотите устроить нам сюрприз, подарить музыкальный подарок, станцевать танец или что-то ещё, свяжитесь с нашим ведущим Максом и согласуйте с ним все детали.
                   </p>
                 </article>
               </div>
@@ -380,7 +358,6 @@
             <div class="slider__dots" role="tablist" aria-label="Переключение слайдов">
               <button class="dot-btn" type="button" data-slider-dot="0" aria-label="Слайд 1"></button>
               <button class="dot-btn" type="button" data-slider-dot="1" aria-label="Слайд 2"></button>
-              <button class="dot-btn" type="button" data-slider-dot="2" aria-label="Слайд 3"></button>
             </div>
           </div>
         </div>
@@ -514,8 +491,8 @@
                 <label class="check"><input type="checkbox" name="drinks" value="white_wine" /><span>Вино белое</span></label>
                 <label class="check"><input type="checkbox" name="drinks" value="champagne" /><span>Шампанское</span></label>
                 <label class="check"><input type="checkbox" name="drinks" value="whiskey" /><span>Виски</span></label>
-                <label class="check"><input type="checkbox" name="drinks" value="cognac" /><span>Коньяк</span></label>
-                <label class="check"><input type="checkbox" name="drinks" value="vodka" /><span>Водка</span></label>
+                <label class="check"><input type="checkbox" name="drinks" value="cognac" /><span>Пиво</span></label>
+                <label class="check"><input type="checkbox" name="drinks" value="vodka" /><span>Ром</span></label>
                 <label class="check"><input type="checkbox" name="drinks" value="other" id="drink-other-toggle" /><span>Другое</span></label>
               </div>
               <div class="form__subfield" id="drink-other-field" hidden>
@@ -548,7 +525,7 @@
       <!-- FOOTER -->
       <footer class="footer">
         <div class="container footer__inner">
-          <p class="footer__text">До скорой встречи! </p>
+          <p class="footer__text">До скорой встречи!</p>
             <p class="footer__text">
               С любовью, Михаил и Арина!</p>
         </div>
@@ -572,6 +549,6 @@
     <script src="./js/confetti.js?v=3" defer></script>
     <script src="./js/parallax.js?v=3" defer></script>
     <script src="./js/form-handler.js?v=3" defer></script>
-    <script src="./js/main.js?v=3" defer></script>
+    <script src="./js/main.js?v=5" defer></script>
   </body>
 </html>

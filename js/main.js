@@ -44,15 +44,6 @@
 
   if (intro && envelope && !hasSeen()) {
     let opened = false;
-    let letterReady = false;
-
-    const hintEl = intro.querySelector(".intro__hint");
-    const continueBtn = intro.querySelector("[data-intro-continue]");
-
-    const updateHintForStep1 = () => {
-      if (!hintEl) return;
-      hintEl.textContent = "Нажмите кнопку на приглашении";
-    };
 
     const openOnce = () => {
       if (opened) return;
@@ -64,14 +55,12 @@
       window.setTimeout(() => {
         envelope.classList.remove("is-opening");
         envelope.classList.add("is-open");
-        letterReady = true;
-        updateHintForStep1();
-        continueBtn?.focus?.();
+        finishIntro();
       }, openDelay);
     };
 
     const finishIntro = () => {
-      if (!opened || !letterReady || intro.classList.contains("is-opened")) return;
+      if (!opened || intro.classList.contains("is-opened")) return;
       intro.classList.add("is-opened");
       window.setTimeout(() => {
         hideIntro();
@@ -95,13 +84,7 @@
 
     intro.addEventListener("click", (e) => {
       if (intro.hidden || opened) return;
-      if (e.target === continueBtn) return;
       openOnce();
-    });
-
-    continueBtn?.addEventListener("click", (e) => {
-      e.preventDefault();
-      finishIntro();
     });
   }
 
